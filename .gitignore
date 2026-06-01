@@ -1,0 +1,27 @@
+# OS files
+.DS_Store
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# BMad configs & output overrides
+_bmad/config.user.toml
+_bmad/custom/*.user.toml
+_bmad-output/temp/
+_bmad-output/logs/
+_bmad-output/videos/
+_bmad-output/planning-artifacts/sprint-status.yaml
+_bmad-output/implementation-artifacts/sprint-status.yaml
