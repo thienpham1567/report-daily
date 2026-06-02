@@ -91,9 +91,12 @@ def run(cfg, args) -> int:
             script, cfg.audio_path,
             ref_audio=cfg.ref_audio, ref_text=cfg.ref_text,
             model_id=cfg.omnivoice_model, device=cfg.tts_device,
+            engine=cfg.tts_engine, voice=cfg.tts_voice,
+            fish_api_key=cfg.fish_api_key,
+            fpt_api_key=cfg.fpt_api_key,
         )
         audio_ready = cfg.audio_path.exists()
-        _log(cfg, f"Synthesized narration -> {cfg.audio_path}")
+        _log(cfg, f"Synthesized narration -> {cfg.audio_path} (engine={cfg.tts_engine})")
 
     # --- Story 1.4: video render ---
     if args.skip_video:

@@ -1,12 +1,12 @@
 # Daily Video Reporter — Python dependencies (Python 3.10+)
 # Story 1.1 — Environment setup.
 
-# --- TTS / OmniVoice (Story 1.3) ---
-# PyTorch 2.8.0 (Apple Silicon build; for NVIDIA use the +cu128 wheels, see setup.sh)
-torch==2.8.0
-torchaudio==2.8.0
-omnivoice==0.1.5
-soundfile>=0.12
+# --- TTS (Story 1.3) ---
+# edge-tts: free, no API key, neural Vietnamese voices (default engine)
+edge-tts>=7.0
+
+# OmniVoice (optional, requires GPU with ≥18GB memory):
+# pip install torch>=2.8 torchaudio>=2.8 omnivoice>=0.1.5 soundfile>=0.12
 
 # --- DevZone REST client (Story 1.5) ---
 requests>=2.31

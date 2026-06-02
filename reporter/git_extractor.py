@@ -37,6 +37,10 @@ _MERGE_RE = re.compile(r"^Merge\b", re.IGNORECASE)
 def _run_git_log(repo: Path, author: str, since: str) -> list[str]:
     """Return raw commit subject lines (AC 1.2.1). ``--no-merges`` plus an explicit
     "Merge ..." filter (AC 1.2.2) guards against both real and squashed merges."""
+    # Convert "today" to explicit midnight timestamp to avoid git timezone quirks.
+    if since.strip().lower() == "today":
+        since = _date.today().isoformat() + "T00:00:00"
+
     cmd = [
         "git",
         "-C",
@@ -45,7 +49,7 @@ def _run_git_log(repo: Path, author: str, since: str) -> list[str]:
         f"--since={since}",
         f"--author={author}",
         "--no-merges",
-        "-i",  # case-insensitive author match (robust to "thienpham1998")
+        "-i",  # case-insensitive author match
         "--pretty=format:%s",
     ]
     try:

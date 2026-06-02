@@ -4,83 +4,325 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body {
         width: 1920px; height: 1080px; overflow: hidden;
         background: #0B1120;
-        font-family: 'Inter', 'Roboto', system-ui, sans-serif;
+        font-family: 'Inter', system-ui, sans-serif;
         color: #E7ECF5;
       }
-      .clip { position: absolute; inset: 0; padding: 120px 140px; }
-      .kicker { font-size: 34px; font-weight: 600; letter-spacing: 6px;
-                 text-transform: uppercase; color: #16C784; }
-      .title { font-size: 110px; font-weight: 900; line-height: 1.05; margin-top: 24px; }
-      .date { font-size: 52px; font-weight: 600; color: #8A99B5; margin-top: 40px; }
-      .accent-bar { width: 220px; height: 12px; border-radius: 6px;
-                     background: linear-gradient(90deg, #16C784, #2D8CFF); margin-top: 56px; }
-      .stats { display: flex; gap: 48px; margin-top: 80px; }
-      .stat { background: #111c33; border-radius: 24px; padding: 40px 56px; }
-      .stat .num { font-size: 84px; font-weight: 900; }
-      .stat .lbl { font-size: 30px; color: #8A99B5; margin-top: 8px; }
-      .section-title { font-size: 72px; font-weight: 800; }
+      body::before {
+        content: '';
+        position: absolute;
+        top: -200px; right: -200px;
+        width: 900px; height: 900px;
+        background: radial-gradient(circle, rgba(22,199,132,0.12) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      body::after {
+        content: '';
+        position: absolute;
+        bottom: -300px; left: -100px;
+        width: 800px; height: 800px;
+        background: radial-gradient(circle, rgba(45,140,255,0.10) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .clip {
+        position: absolute; inset: 0;
+        padding: 90px 120px 120px;
+        display: flex; flex-direction: column;
+      }
+      .slide-badge {
+        display: inline-flex; align-items: center; gap: 10px;
+        background: rgba(22,199,132,0.12);
+        border: 1px solid rgba(22,199,132,0.25);
+        border-radius: 100px;
+        padding: 10px 28px;
+        font-size: 22px; font-weight: 600;
+        color: #16C784;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        width: fit-content;
+        backdrop-filter: blur(8px);
+      }
+      .slide-badge .dot {
+        width: 8px; height: 8px;
+        background: #16C784;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #16C784;
+      }
+      .hero-title {
+        font-size: 96px; font-weight: 900;
+        line-height: 1.08; margin-top: 36px;
+        background: linear-gradient(135deg, #E7ECF5 0%, rgba(231,236,245,0.75) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-subtitle {
+        font-size: 36px; font-weight: 400;
+        color: #8A99B5; margin-top: 24px;
+        letter-spacing: 0.5px;
+      }
+      .accent-line {
+        width: 180px; height: 4px;
+        background: linear-gradient(90deg, #16C784, #2D8CFF);
+        border-radius: 2px;
+        margin-top: 48px;
+      }
+      .stats {
+        display: flex; gap: 32px;
+        margin-top: 64px;
+      }
+      .stat {
+        background: rgba(17,28,51,0.65);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 24px;
+        padding: 44px 52px;
+        min-width: 260px;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        border-radius: 24px 24px 0 0;
+      }
+      .stat.green::before { background: linear-gradient(90deg, #16C784, rgba(22,199,132,0.3)); }
+      .stat.blue::before { background: linear-gradient(90deg, #2D8CFF, rgba(45,140,255,0.3)); }
+      .stat.muted::before { background: linear-gradient(90deg, #8A99B5, rgba(138,153,181,0.3)); }
+      .stat .num { font-size: 72px; font-weight: 900; line-height: 1; }
+      .stat .lbl {
+        font-size: 24px; font-weight: 500;
+        color: #8A99B5; margin-top: 12px;
+        text-transform: uppercase; letter-spacing: 2px;
+      }
+      .section-header {
+        display: flex; align-items: center; gap: 20px;
+        margin-top: 20px;
+      }
+      .section-icon {
+        width: 72px; height: 72px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 20px;
+        font-size: 36px;
+      }
+      .section-icon.green {
+        background: rgba(22,199,132,0.12);
+        border: 1px solid rgba(22,199,132,0.2);
+      }
+      .section-icon.blue {
+        background: rgba(45,140,255,0.12);
+        border: 1px solid rgba(45,140,255,0.2);
+      }
+      .section-title {
+        font-size: 56px; font-weight: 800; line-height: 1.2;
+      }
       .section-title .em { color: #16C784; }
       .section-title .em.blue { color: #2D8CFF; }
-      ul { list-style: none; margin-top: 60px; }
-      li { font-size: 46px; font-weight: 600; line-height: 1.55;
-            display: flex; gap: 24px; align-items: baseline; }
-      .bullet { font-size: 40px; }
-      .footer { position: absolute; bottom: 70px; left: 140px;
-                 font-size: 30px; color: #8A99B5; }
+      .task-list {
+        list-style: none;
+        margin-top: 48px;
+        display: flex; flex-direction: column;
+        gap: 20px;
+      }
+      .task-item {
+        display: flex; align-items: center; gap: 24px;
+        background: rgba(17,28,51,0.5);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.04);
+        border-radius: 16px;
+        padding: 28px 36px;
+        font-size: 36px; font-weight: 600; line-height: 1.4;
+      }
+      .task-num {
+        width: 48px; height: 48px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 14px;
+        font-size: 22px; font-weight: 800; flex-shrink: 0;
+      }
+      .task-num.green {
+        background: rgba(22,199,132,0.15); color: #16C784;
+        border: 1px solid rgba(22,199,132,0.3);
+      }
+      .task-num.blue {
+        background: rgba(45,140,255,0.15); color: #2D8CFF;
+        border: 1px solid rgba(45,140,255,0.3);
+      }
+      .task-empty {
+        color: #8A99B5; font-weight: 400; font-style: italic;
+        padding: 28px 36px; font-size: 36px;
+      }
+      .brand-bar {
+        position: absolute;
+        bottom: 0; left: 0; right: 0; height: 80px;
+        background: rgba(17,28,51,0.6);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(255,255,255,0.05);
+        display: flex; align-items: center;
+        justify-content: space-between;
+        padding: 0 120px; font-size: 22px; color: #8A99B5;
+      }
+      .brand-bar .logo-text {
+        font-weight: 700; color: #E7ECF5; letter-spacing: 1px;
+      }
+      .brand-bar .separator {
+        width: 4px; height: 4px;
+        background: #8A99B5; border-radius: 50%;
+        margin: 0 16px; opacity: 0.5;
+      }
+      .brand-left, .brand-right { display: flex; align-items: center; }
+      .progress-dots { display: flex; gap: 8px; }
+      .progress-dots .pdot {
+        width: 10px; height: 10px; border-radius: 50%;
+        background: rgba(255,255,255,0.12);
+      }
+      .progress-dots .pdot.active {
+        background: #16C784;
+        box-shadow: 0 0 10px rgba(22,199,132,0.5);
+      }
+      .status-badge {
+        margin-left: auto;
+        padding: 8px 18px;
+        border-radius: 10px;
+        font-size: 22px;
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .app-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-left: 12px;
+        vertical-align: middle;
+      }
+      .stat.amber::before { background: linear-gradient(90deg, #E8B339, rgba(232,179,57,0.3)); }
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main"
-         data-start="0" data-duration="23.16"
+         data-start="0" data-duration="33.861"
          data-width="1920" data-height="1080">
 
-      <!-- Slide 1: Title + Date -->
-      <div id="slide-title" class="clip" data-start="0.0" data-duration="4.169" data-track-index="1">
-        <div class="kicker">Daily Progress Report</div>
-        <div class="title">Báo cáo<br/>công việc</div>
-        <div class="date">2026-06-01 · Thienpham</div>
-        <div class="accent-bar"></div>
+      <!-- ═══ Slide 1: Title ═══ -->
+      <div id="slide-title" class="clip" data-start="0.0" data-duration="10.13" data-track-index="1">
+        <div class="slide-badge"><span class="dot"></span> Daily Report</div>
+        <div class="hero-title">Báo cáo<br/>công việc</div>
+        <div class="hero-subtitle">2026-06-02  ·  Ngọc Thiên</div>
+        <div class="accent-line"></div>
         <div class="stats">
-          <div class="stat"><div class="num" style="color:#16C784">1</div><div class="lbl">Tính năng</div></div>
-          <div class="stat"><div class="num" style="color:#2D8CFF">0</div><div class="lbl">Sửa lỗi</div></div>
-          <div class="stat"><div class="num" style="color:#8A99B5">0</div><div class="lbl">Chất lượng</div></div>
+          <div class="stat green">
+            <div class="num" style="color:#16C784">1</div>
+            <div class="lbl">Đã xong</div>
+          </div>
+          <div class="stat blue">
+            <div class="num" style="color:#2D8CFF">1</div>
+            <div class="lbl">Đang xử lý</div>
+          </div>
+          <div class="stat amber">
+            <div class="num" style="color:#E8B339">0</div>
+            <div class="lbl">Chờ xử lý</div>
+          </div>
+          <div class="stat muted">
+            <div class="num" style="color:#8A99B5">1</div>
+            <div class="lbl">Hoãn lại</div>
+          </div>
+        </div>
+        <div class="brand-bar">
+          <div class="brand-left">
+            <span class="logo-text">VIETNIX</span>
+            <span class="separator"></span>
+            <span>Daily Progress Report</span>
+          </div>
+          <div class="brand-right">
+            <div class="progress-dots">
+              <div class="pdot active"></div><div class="pdot"></div><div class="pdot"></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Slide 2: Completed Features -->
-      <div id="slide-features" class="clip" data-start="4.169" data-duration="12.661" data-track-index="1">
-        <div class="section-title">🚀 <span class="em">Tính năng</span> đã hoàn thành</div>
-        <ul><li><span class="bullet" style="color:#16C784">▸</span> Initial commit of daily report automation project</li></ul>
-        <div class="footer">2026-06-01 · Thienpham</div>
+      <!-- ═══ Slide 2: Done ═══ -->
+      <div id="slide-done" class="clip" data-start="10.13" data-duration="5.738" data-track-index="1">
+        <div class="slide-badge"><span class="dot"></span> Completed</div>
+        <div class="section-header">
+          <div class="section-icon green">✅</div>
+          <div class="section-title"><span class="em">Task</span> đã xong</div>
+        </div>
+        <ul class="task-list"><li class="task-item"><span class="task-num green">1</span><div style="flex:1"><div>Xử lý UI v1.0 <span class="app-badge" style="background:rgba(45,140,255,0.15);color:#2D8CFF;border:1px solid rgba(45,140,255,0.3)">Client</span></div><div style="color:#8A99B5;font-weight:400;font-size:26px;margin-top:6px">↳ Story: Thiết lập bảo mật</div></div></li></ul>
+        <div class="brand-bar">
+          <div class="brand-left">
+            <span class="logo-text">VIETNIX</span>
+            <span class="separator"></span>
+            <span>2026-06-02  ·  Ngọc Thiên</span>
+          </div>
+          <div class="brand-right">
+            <div class="progress-dots">
+              <div class="pdot"></div><div class="pdot active"></div><div class="pdot"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Slide 3: Bug Fixes & Refactoring -->
-      <div id="slide-fixes" class="clip" data-start="16.83" data-duration="6.33" data-track-index="1">
-        <div class="section-title">🛠️ <span class="em blue">Sửa lỗi</span> & Tái cấu trúc</div>
-        <ul><li style="color:#8A99B5">— Không có —</li></ul>
-        <div class="footer">2026-06-01 · Thienpham</div>
+      <!-- ═══ Slide 3: Active ═══ -->
+      <div id="slide-active" class="clip" data-start="15.868" data-duration="17.993" data-track-index="1">
+        <div class="slide-badge"><span class="dot"></span> Remaining</div>
+        <div class="section-header">
+          <div class="section-icon blue">📊</div>
+          <div class="section-title"><span class="em blue">Task</span> còn lại</div>
+        </div>
+        <ul class="task-list"><li class="task-item"><span class="task-num blue">1</span><div style="flex:1"><div>Xử lý UI cho v1.0 <span class="app-badge" style="background:rgba(45,140,255,0.15);color:#2D8CFF;border:1px solid rgba(45,140,255,0.3)">Client</span></div><div style="color:#8A99B5;font-weight:400;font-size:26px;margin-top:6px">↳ Story: Tra cứu &amp; gợi ý tên miền để đăng ký mới</div></div><span class="status-badge" style="background:rgba(45,140,255,0.15);color:#2D8CFF;border:1px solid rgba(45,140,255,0.3)">🔄 Đang xử lý</span></li>
+<li class="task-item"><span class="task-num blue">2</span><div style="flex:1"><div>Xử lý UI v1.1 <span class="app-badge" style="background:rgba(45,140,255,0.15);color:#2D8CFF;border:1px solid rgba(45,140,255,0.3)">Client</span></div><div style="color:#8A99B5;font-weight:400;font-size:26px;margin-top:6px">↳ Story: Danh mục dịch vụ</div></div><span class="status-badge" style="background:rgba(138,153,181,0.15);color:#8A99B5;border:1px solid rgba(138,153,181,0.3)">⏳ Hoãn lại</span></li></ul>
+        <div class="brand-bar">
+          <div class="brand-left">
+            <span class="logo-text">VIETNIX</span>
+            <span class="separator"></span>
+            <span>2026-06-02  ·  Ngọc Thiên</span>
+          </div>
+          <div class="brand-right">
+            <div class="progress-dots">
+              <div class="pdot"></div><div class="pdot"></div><div class="pdot active"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Narration audio track -->
-      <audio data-start="0" data-duration="23.16" data-track-index="0" src="assets/report.wav"></audio>
+      <audio data-start="0" data-duration="33.861" data-track-index="0" src="assets/report.wav"></audio>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      tl.from("#slide-title .kicker", { opacity: 0, y: -30, duration: 0.6 }, 0.0)
-        .from("#slide-title .title", { opacity: 0, y: 40, duration: 0.7 }, "<0.1")
-        .from("#slide-title .stat", { opacity: 0, y: 30, stagger: 0.12, duration: 0.5 }, "<0.2")
-        .from("#slide-features .section-title", { opacity: 0, x: -40, duration: 0.6 }, 4.169)
-        .from("#slide-features li", { opacity: 0, x: -30, stagger: 0.12, duration: 0.4 }, "<0.2")
-        .from("#slide-fixes .section-title", { opacity: 0, x: -40, duration: 0.6 }, 16.83)
-        .from("#slide-fixes li", { opacity: 0, x: -30, stagger: 0.12, duration: 0.4 }, "<0.2");
+
+      tl.from("#slide-title .slide-badge", { opacity: 0, y: -20, scale: 0.9, duration: 0.5, ease: "back.out(1.5)" }, 0.0)
+        .from("#slide-title .hero-title", { opacity: 0, y: 50, duration: 0.8, ease: "power3.out" }, "<0.15")
+        .from("#slide-title .hero-subtitle", { opacity: 0, y: 20, duration: 0.5 }, "<0.2")
+        .from("#slide-title .accent-line", { scaleX: 0, transformOrigin: "left center", duration: 0.6, ease: "power2.out" }, "<0.1")
+        .from("#slide-title .stat", { opacity: 0, y: 40, scale: 0.95, stagger: 0.1, duration: 0.5, ease: "back.out(1.2)" }, "<0.3")
+        .from("#slide-title .brand-bar", { opacity: 0, y: 20, duration: 0.4 }, "<0.2")
+
+        .from("#slide-done .slide-badge", { opacity: 0, y: -20, scale: 0.9, duration: 0.4, ease: "back.out(1.5)" }, 10.13)
+        .from("#slide-done .section-icon", { opacity: 0, scale: 0.5, rotation: -15, duration: 0.5, ease: "back.out(2)" }, "<0.1")
+        .from("#slide-done .section-title", { opacity: 0, x: -40, duration: 0.6, ease: "power3.out" }, "<0.1")
+        .from("#slide-done .task-item, #slide-done .task-empty", { opacity: 0, x: -30, y: 10, stagger: 0.1, duration: 0.4, ease: "power2.out" }, "<0.2")
+
+        .from("#slide-active .slide-badge", { opacity: 0, y: -20, scale: 0.9, duration: 0.4, ease: "back.out(1.5)" }, 15.868)
+        .from("#slide-active .section-icon", { opacity: 0, scale: 0.5, rotation: -15, duration: 0.5, ease: "back.out(2)" }, "<0.1")
+        .from("#slide-active .section-title", { opacity: 0, x: -40, duration: 0.6, ease: "power3.out" }, "<0.1")
+        .from("#slide-active .task-item, #slide-active .task-empty", { opacity: 0, x: -30, y: 10, stagger: 0.1, duration: 0.4, ease: "power2.out" }, "<0.2");
+
       window.__timelines["main"] = tl;
     </script>
   </body>

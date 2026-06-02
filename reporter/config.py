@@ -74,7 +74,11 @@ class Config:
     devzone_project_id: str = ""
     devzone_api_key: str = ""
 
-    # --- TTS / OmniVoice (Story 1.3) ---
+    # --- TTS (Story 1.3) ---
+    tts_engine: str = "edge"  # edge | fpt | fish | omnivoice
+    tts_voice: str = "male"  # edge: male|female; fpt: male|female|leminh; fish: ref_id
+    fpt_api_key: str = ""  # FPT.AI API key (FPT_API_KEY)
+    fish_api_key: str = ""  # Fish Audio API key (FISH_API_KEY)
     omnivoice_model: str = "k2-fsa/OmniVoice"
     ref_audio: Path | None = None
     ref_text: str = ""
@@ -133,6 +137,10 @@ def load_config() -> Config:
             "DEVZONE_PROJECT_ID", ctx.get("project_id", "")
         ),
         devzone_api_key=os.environ.get("DEVZONE_API_KEY", ctx.get("api_key", "")),
+        tts_engine=os.environ.get("REPORTER_TTS_ENGINE", "edge"),
+        tts_voice=os.environ.get("REPORTER_TTS_VOICE", "male"),
+        fpt_api_key=os.environ.get("FPT_API_KEY", ""),
+        fish_api_key=os.environ.get("FISH_API_KEY", ""),
         omnivoice_model=os.environ.get("OMNIVOICE_MODEL", "k2-fsa/OmniVoice"),
         ref_audio=ref_audio,
         ref_text=os.environ.get("REPORTER_REF_TEXT", ""),
