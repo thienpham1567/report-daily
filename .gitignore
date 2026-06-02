@@ -17,6 +17,18 @@ venv/
 pip-log.txt
 pip-delete-this-directory.txt
 
+# Local config & secrets
+.env
+
+# Reference voice clips (provide your own)
+ref/*.wav
+ref/*.aiff
+
+# HyperFrames project scaffold artifacts
+video/node_modules/
+video/renders/
+video/assets/report.wav
+
 # BMad configs & output overrides
 _bmad/config.user.toml
 _bmad/custom/*.user.toml

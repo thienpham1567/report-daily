@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: #0B1120;
+        font-family: 'Inter', 'Roboto', system-ui, sans-serif;
+        color: #E7ECF5;
+      }
+      .clip { position: absolute; inset: 0; padding: 120px 140px; }
+      .kicker { font-size: 34px; font-weight: 600; letter-spacing: 6px;
+                 text-transform: uppercase; color: #16C784; }
+      .title { font-size: 110px; font-weight: 900; line-height: 1.05; margin-top: 24px; }
+      .date { font-size: 52px; font-weight: 600; color: #8A99B5; margin-top: 40px; }
+      .accent-bar { width: 220px; height: 12px; border-radius: 6px;
+                     background: linear-gradient(90deg, #16C784, #2D8CFF); margin-top: 56px; }
+      .stats { display: flex; gap: 48px; margin-top: 80px; }
+      .stat { background: #111c33; border-radius: 24px; padding: 40px 56px; }
+      .stat .num { font-size: 84px; font-weight: 900; }
+      .stat .lbl { font-size: 30px; color: #8A99B5; margin-top: 8px; }
+      .section-title { font-size: 72px; font-weight: 800; }
+      .section-title .em { color: #16C784; }
+      .section-title .em.blue { color: #2D8CFF; }
+      ul { list-style: none; margin-top: 60px; }
+      li { font-size: 46px; font-weight: 600; line-height: 1.55;
+            display: flex; gap: 24px; align-items: baseline; }
+      .bullet { font-size: 40px; }
+      .footer { position: absolute; bottom: 70px; left: 140px;
+                 font-size: 30px; color: #8A99B5; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main"
+         data-start="0" data-duration="23.16"
+         data-width="1920" data-height="1080">
+
+      <!-- Slide 1: Title + Date -->
+      <div id="slide-title" class="clip" data-start="0.0" data-duration="4.169" data-track-index="1">
+        <div class="kicker">Daily Progress Report</div>
+        <div class="title">Báo cáo<br/>công việc</div>
+        <div class="date">2026-06-01 · Thienpham</div>
+        <div class="accent-bar"></div>
+        <div class="stats">
+          <div class="stat"><div class="num" style="color:#16C784">1</div><div class="lbl">Tính năng</div></div>
+          <div class="stat"><div class="num" style="color:#2D8CFF">0</div><div class="lbl">Sửa lỗi</div></div>
+          <div class="stat"><div class="num" style="color:#8A99B5">0</div><div class="lbl">Chất lượng</div></div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Completed Features -->
+      <div id="slide-features" class="clip" data-start="4.169" data-duration="12.661" data-track-index="1">
+        <div class="section-title">🚀 <span class="em">Tính năng</span> đã hoàn thành</div>
+        <ul><li><span class="bullet" style="color:#16C784">▸</span> Initial commit of daily report automation project</li></ul>
+        <div class="footer">2026-06-01 · Thienpham</div>
+      </div>
+
+      <!-- Slide 3: Bug Fixes & Refactoring -->
+      <div id="slide-fixes" class="clip" data-start="16.83" data-duration="6.33" data-track-index="1">
+        <div class="section-title">🛠️ <span class="em blue">Sửa lỗi</span> & Tái cấu trúc</div>
+        <ul><li style="color:#8A99B5">— Không có —</li></ul>
+        <div class="footer">2026-06-01 · Thienpham</div>
+      </div>
+
+      <!-- Narration audio track -->
+      <audio data-start="0" data-duration="23.16" data-track-index="0" src="assets/report.wav"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.from("#slide-title .kicker", { opacity: 0, y: -30, duration: 0.6 }, 0.0)
+        .from("#slide-title .title", { opacity: 0, y: 40, duration: 0.7 }, "<0.1")
+        .from("#slide-title .stat", { opacity: 0, y: 30, stagger: 0.12, duration: 0.5 }, "<0.2")
+        .from("#slide-features .section-title", { opacity: 0, x: -40, duration: 0.6 }, 4.169)
+        .from("#slide-features li", { opacity: 0, x: -30, stagger: 0.12, duration: 0.4 }, "<0.2")
+        .from("#slide-fixes .section-title", { opacity: 0, x: -40, duration: 0.6 }, 16.83)
+        .from("#slide-fixes li", { opacity: 0, x: -30, stagger: 0.12, duration: 0.4 }, "<0.2");
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Story 1.6 — launchd agent that triggers the daily report at 17:00 local time.
+
+  IMPORTANT: launchd uses the machine's LOCAL timezone. For 17:00 Vietnam time
+  (ICT, UTC+7), ensure the Mac's timezone is set to Asia/Ho_Chi_Minh, or adjust
+  the Hour below to the local-time equivalent.
+
+  Install:
+    1. Edit the two __ROOT__ placeholders below to the absolute project path.
+    2. cp scripts/com.vietnix.dailyreporter.plist ~/Library/LaunchAgents/
+    3. launchctl unload ~/Library/LaunchAgents/com.vietnix.dailyreporter.plist 2>/dev/null
+       launchctl load   ~/Library/LaunchAgents/com.vietnix.dailyreporter.plist
+    4. Test now:  launchctl start com.vietnix.dailyreporter
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.vietnix.dailyreporter</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__ROOT__/scripts/run_daily.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__ROOT__</string>
+
+    <!-- AC 1.6.1 — fire daily at 17:00 -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>17</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <!-- AC 1.6.3 — capture stdout/stderr alongside the app's own scheduler.log -->
+    <key>StandardOutPath</key>
+    <string>__ROOT__/_bmad-output/logs/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__ROOT__/_bmad-output/logs/launchd.err.log</string>
+</dict>
+</plist>
